@@ -1,0 +1,28 @@
+vol(1,toronto,chicago,1,550).
+vol(2,montreal,paris,8,4500).
+vol(3,londres,paris,1,500).
+vol(4,montreal,new_york,1,500).
+vol(5,chicago,new_york,2,700).
+vol(6,new_york,tampa,4,1200).
+vol(7,tampa,cancun,4,1100).
+vol(8,paris,rome,2,800).
+vol(9,toronto,londres,9,5300).
+vol(10,rome,new_york,8,4800).
+vol(11,toronto,montreal,1,500).
+
+relie(V1,V2) :- vol(_,V1,V2,_,_);vol(_,V2,V1,_,_).
+relie_par_escale(V1,V2):-relie(V1,V3),relie(V1,V3),V1\== V2.
+
+temps_voyage(V1,V2,Temps) :- vol(_,V1,V2,Temps,_).
+temps_voyage(V1,V2,Temps) :- vol(_,V2,V1,Temps,_).
+temps_voyage(V1,V2,Temps) :- temps_voyage(V1,V3,T1),
+ (vol(_,V3,V2,T2,_);
+ vol(_,V2,V3,T2,_)),
+ Temps is T1 + T2.
+
+distance_voyage(V1,V2,D) :- vol(_,V1,V2,_,D).
+distance_voyage(V1,V2,D) :- vol(_,V2,V1,_,D).
+distance_voyage(V1,V2,D) :- distance_voyage(V1,V3,D1),
+ (vol(_,V3,V2,_,D2);
+ vol(_,V2,V3,_,D2)),
+ D is D1 + D2.
